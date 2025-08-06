@@ -9,6 +9,8 @@ import FavoritesScreen from 'shakafront/screens/FavoritesScreen';
 import DetailScreen from 'shakafront/screens/DetailScreen';
 import AllSpotsMapScreen from 'shakafront/screens/AllSpotsMapScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
 
 export type RootStackParamList = {
   HomeTab: undefined;

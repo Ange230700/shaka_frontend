@@ -1,12 +1,28 @@
 // src\screens\DetailScreen.tsx
 
+import { Buffer } from "buffer";
 import React, { useEffect, useState } from 'react';
 import { Text, Image, ScrollView, StyleSheet, Linking, ActivityIndicator } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { fetchSurfSpotById } from 'shakafront/api/surfspotApi';
 import { SurfSpot } from 'shakafront/models/SurfSpot';
+import UniversalMap from "shakafront/components/UniversalMap";
 
 type DetailScreenRouteProp = RouteProp<{ params: { surfSpotId: string } }, 'params'>;
+
+function parseGeocodeRaw(geocodeRaw?: string | null): { lat: number, lng: number } {
+  if (!geocodeRaw) return { lat: 0, lng: 0 };
+  try {
+    // React Native/Node: use Buffer
+    const json = Buffer.from(geocodeRaw, "base64").toString("utf-8");
+    const data = JSON.parse(json);
+    const lat = Number(data?.o?.lat ?? 0);
+    const lng = Number(data?.o?.lng ?? 0);
+    return { lat, lng };
+  } catch {
+    return { lat: 0, lng: 0 };
+  }
+}
 
 const DetailScreen = () => {
   const route = useRoute<DetailScreenRouteProp>();
@@ -23,9 +39,12 @@ const DetailScreen = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   if (!spot) return <Text>Not found</Text>;
 
+  const { lat, lng } = parseGeocodeRaw(spot.geocodeRaw);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={{ uri: spot.photoUrls[0] ?? 'https://via.placeholder.com/400x300.png?text=No+Image' }} style={styles.image} />
+      <UniversalMap latitude={lat} longitude={lng} label={spot.destination} />
       <Text style={styles.title}>{spot.destination}</Text>
       <Text style={styles.info}>Address: {spot.address}</Text>
       <Text style={styles.info}>Difficulty: {spot.difficultyLevel} / 5</Text>
