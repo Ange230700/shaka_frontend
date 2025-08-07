@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "copy-leaflet": "cp -r node_modules/leaflet/dist/images/ public/images/",
     "clean": "rm -rf public/images/* package-lock.json node_modules .expo",
-    "postinstall": "npm run copy-leaflet"
+    "postinstall": "npm run copy-leaflet",
+    "export": "expo export"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
