@@ -9,11 +9,11 @@ const API_BASE_URL =
   "https://mobile-surf-back.onrender.com";
 
 export async function fetchSurfSpots(): Promise<SurfSpot[]> {
-  const res = await axios.get(`${API_BASE_URL}/api/surfspot/all`);
+  const res = await axios.get(`${API_BASE_URL}/surfspot/all`);
   return res.data;
 }
 
 export async function fetchSurfSpotById(id: string): Promise<SurfSpot> {
-  const res = await axios.get(`${API_BASE_URL}/api/surfspot/${id}`);
+  const res = await axios.get(`${API_BASE_URL}/surfspot/${id}`);
   return res.data;
 }

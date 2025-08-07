@@ -6,6 +6,7 @@ import { Text, Image, ScrollView, StyleSheet, Linking, ActivityIndicator } from 
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { fetchSurfSpotById } from 'shakafront/api/surfspotApi';
 import { SurfSpot } from 'shakafront/models/SurfSpot';
+// @ts-ignore
 import UniversalMap from "shakafront/components/UniversalMap";
 
 type DetailScreenRouteProp = RouteProp<{ params: { surfSpotId: string } }, 'params'>;
