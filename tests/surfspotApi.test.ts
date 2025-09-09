@@ -1,29 +1,37 @@
-// tests\surfspotApi.test.ts
-
-import axios from 'axios';
+// tests/surfspotApi.test.ts
 import { fetchSurfSpots, fetchSurfSpotById } from 'shakafront/api/surfspotApi';
 
-jest.mock('axios');
-const mocked = axios as jest.Mocked<typeof axios>;
+// ✅ Mock the axios instance module directly
+jest.mock('shakafront/services/http', () => ({
+  __esModule: true,
+  default: { get: jest.fn() },
+}));
+
+// Grab the mocked http to set expectations & return values
+const http = require('shakafront/services/http').default as {
+  get: jest.Mock;
+};
 
 describe('surfspotApi', () => {
-  afterEach(() => jest.resetAllMocks());
+  afterEach(() => {
+    http.get.mockReset();
+  });
 
   it('fetchSurfSpots hits /surfspot/all', async () => {
-    mocked.get.mockResolvedValueOnce({ data: [{ surfSpotId: '1' }] as any });
+    http.get.mockResolvedValueOnce({ data: [{ surfSpotId: '1' }] });
+
     const res = await fetchSurfSpots();
-    expect(mocked.get).toHaveBeenCalledWith(
-      expect.stringMatching(/\/surfspot\/all$/),
-    );
+
+    expect(http.get).toHaveBeenCalledWith('/surfspot/all');
     expect(res[0].surfSpotId).toBe('1');
   });
 
   it('fetchSurfSpotById hits /surfspot/:id', async () => {
-    mocked.get.mockResolvedValueOnce({ data: { surfSpotId: '42' } as any });
+    http.get.mockResolvedValueOnce({ data: { surfSpotId: '42' } });
+
     const res = await fetchSurfSpotById('42');
-    expect(mocked.get).toHaveBeenCalledWith(
-      expect.stringMatching(/\/surfspot\/42$/),
-    );
+
+    expect(http.get).toHaveBeenCalledWith('/surfspot/42');
     expect(res.surfSpotId).toBe('42');
   });
 });
