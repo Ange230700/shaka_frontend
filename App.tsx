@@ -11,14 +11,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { useColorScheme } from 'react-native';
+
 import HomeScreen from './src/screens/HomeScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import AllSpotsMapScreen from './src/screens/AllSpotsMapScreen';
 import DetailScreen from './src/screens/DetailScreen';
-import { Provider } from 'react-redux';
-import { store } from './src/store';
-import { useColorScheme } from 'react-native';
+
 global.Buffer = Buffer;
 
 export type RootStackParamList = {
@@ -30,7 +32,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
-/** Customize both themes (optional) */
+/** Customize both themes */
 const MyLightTheme: Theme = {
   ...NavLight,
   colors: {
@@ -65,11 +67,7 @@ function renderTabBarIcon(routeName: string) {
   };
 
   return ({ color, size }: { color: string; size: number }) => (
-    <Ionicons
-      name={iconMap[routeName] || 'home'}
-      size={size}
-      color={color}
-    />
+    <Ionicons name={iconMap[routeName] || 'home'} size={size} color={color} />
   );
 }
 
@@ -94,23 +92,27 @@ export default function App() {
 
   return (
     <Provider store={store}>
-    <SafeAreaProvider>
-      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="HomeTab"
-          component={Tabs}
-          options={{ headerShown: false }}
-          />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={{ title: 'Surf Spot Details' }}
-          />
-      </Stack.Navigator>
-    </NavigationContainer>
-          </SafeAreaProvider>
-          </Provider>
+      <SafeAreaProvider>
+        <StatusBar
+          style={scheme === 'dark' ? 'light' : 'dark'}
+          backgroundColor={theme.colors.background}
+          translucent={false}
+        />
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="HomeTab"
+              component={Tabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Detail"
+              component={DetailScreen}
+              options={{ title: 'Surf Spot Details' }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
