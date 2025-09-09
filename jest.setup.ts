@@ -1,4 +1,4 @@
-// jest.setup.js
+// jest.setup.ts
 import 'react-native-gesture-handler/jestSetup.js';
 import '@testing-library/jest-native/extend-expect';
 jest.setTimeout(15000);
@@ -33,19 +33,36 @@ jest.mock('axios', () => {
   };
 });
 
-jest.mock('shakafront/services/http', () => ({
-  __esModule: true,
-  default: {
-    get: jest.fn(),
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn(),
-    interceptors: {
-      request: { use: jest.fn(), eject: jest.fn() },
-      response: { use: jest.fn(), eject: jest.fn() },
-    },
-  },
-}));
+const http = require('shakafront/services/http').default as {
+  get: jest.Mock;
+  post: jest.Mock;
+  put: jest.Mock;
+  delete: jest.Mock;
+};
+beforeEach(() => {
+  http.get.mockReset();
+  http.post.mockReset();
+  http.put.mockReset();
+  http.delete.mockReset();
+  http.get.mockImplementation((url: string) => {
+    if (url === '/surfspot/all') return Promise.resolve({ data: [] });
+    const m = /^\/surfspot\/(.+)$/.exec(url);
+    if (m) {
+      const id = m[1];
+      return Promise.resolve({
+        data: {
+          surfSpotId: id,
+          destination: 'Mock Spot',
+          address: 'Mock Address',
+          photoUrls: [],
+          breakTypes: [],
+          influencers: [],
+        },
+      });
+    }
+    return Promise.resolve({ data: {} });
+  });
+});
 
 // Optional: keep the console quiet for known noisy warnings (leave real errors)
 const originalConsoleError = console.error;

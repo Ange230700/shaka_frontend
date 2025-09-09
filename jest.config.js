@@ -8,7 +8,7 @@ export default {
     '**/?(*.)+(test|spec).[tj]s?(x)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^shakafront/(.*)$': '<rootDir>/src/$1',
     '^shakafront1/(.*)$': '<rootDir>/tests/$1',
