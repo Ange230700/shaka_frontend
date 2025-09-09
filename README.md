@@ -1,4 +1,4 @@
-<!-- README.md -->
+<!-- shaka_frontend\README.md -->
 
 # 🌊 Shaka — Surf spots mobile app (Expo + React Native)
 
