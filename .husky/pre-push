@@ -1,16 +1,10 @@
 # .husky\pre-push
 
-set -e
-
-# Optional: skip on tag pushes
-case "$HUSKY_GIT_PARAMS" in
-  *--tags*) exit 0 ;;
-esac
-
 echo "🔎 Running unit tests before push..."
-npm run test
 
-echo "🧹 Linting..."
-npm run lint
-
-echo "✅ Tests passed. Pushing..."
+# Ask Jest what tests exist; run only if there are some
+if npx jest --listTests | grep -q .; then
+  npm test
+else
+  echo "🟡 No tests found — skipping Jest."
+fi

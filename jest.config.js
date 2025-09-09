@@ -3,6 +3,11 @@
 export default {
   preset: 'jest-expo',
   testEnvironment: 'node',
+  testMatch: [
+    '**/__tests__/**/*.(test|spec).[tj]s?(x)',
+    '**/?(*.)+(test|spec).[tj]s?(x)',
+  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     '^shakafront/(.*)$': '<rootDir>/src/$1',

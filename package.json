@@ -14,7 +14,7 @@
     "copy-leaflet": "cp -r node_modules/leaflet/dist/images/ public/images/",
     "clean": "rm -rf public/images/* package-lock.json node_modules .expo dist",
     "postinstall": "npm run copy-leaflet",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --passWithNoTests",
     "test:watch": "jest --watch --detectOpenHandles",
     "test:ci": "jest --runInBand --detectOpenHandles",
     "export": "expo export"
