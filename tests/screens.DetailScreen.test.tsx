@@ -70,11 +70,15 @@ describe('DetailScreen', () => {
   it('decodes geocodeRaw and passes coords to UniversalMap', async () => {
     const { findByTestId, findByText } = renderWithNav(<DetailScreen />);
 
-    expect(await findByText('Detail X')).toBeTruthy();
+    // Either remove this line or make it non-ambiguous:
+    // expect(await findByText('Detail X')).toBeTruthy();
 
+    // ✅ Unambiguous assertions via testIDs from the UniversalMap mock
+    const labelEl = await findByTestId('label');
     const latEl = await findByTestId('lat');
     const lngEl = await findByTestId('lng');
 
+    expect(labelEl.props.children).toBe('Detail X');
     expect(Number(latEl.props.children)).toBeCloseTo(43.67);
     expect(Number(lngEl.props.children)).toBeCloseTo(-1.44);
   });

@@ -1,9 +1,8 @@
 // tests/theme.StatusBar.test.tsx
 import React from 'react';
-import App from '../App';
 import { render } from '@testing-library/react-native';
 
-// Mock expo-status-bar so we can query by testID and inspect props
+// 1) Mock expo-status-bar BEFORE loading App
 jest.mock('expo-status-bar', () => {
   const { View } = require('react-native');
   return {
@@ -13,20 +12,20 @@ jest.mock('expo-status-bar', () => {
 });
 
 test('uses dark theme (light status bar text)', () => {
-  // force dark scheme so App picks MyDarkTheme
-  jest.resetModules();
-  jest.doMock('react-native', () => ({
-    ...jest.requireActual('react-native'),
-    useColorScheme: () => 'dark',
-  }));
+  // 2) Mock useColorScheme, then load App in an isolated module scope
+  jest.isolateModules(() => {
+    jest.doMock('react-native', () => ({
+      ...jest.requireActual('react-native'),
+      useColorScheme: () => 'dark',
+    }));
 
-  const { getByTestId } = render(<App />);
-  const sb = getByTestId('StatusBar');
+    // 3) Now require App so it picks up the mocks
+    const App = require('../App').default;
 
-  // style should be 'light' in dark mode (white icons/text)
-  expect(sb.props.style).toBe('light');
+    const { getByTestId } = render(<App />);
+    const sb = getByTestId('StatusBar');
 
-  // You also set backgroundColor={theme.colors.background} in App
-  // so in dark mode it should be your dark background ('#0b0f14' from MyDarkTheme)
-  expect(sb.props.backgroundColor).toBe('#0b0f14');
+    expect(sb.props.style).toBe('light'); // dark scheme -> light bar text
+    expect(sb.props.backgroundColor).toBe('#0b0f14'); // from MyDarkTheme.colors.background
+  });
 });
