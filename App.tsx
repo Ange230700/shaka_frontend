@@ -21,7 +21,7 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import AllSpotsMapScreen from './src/screens/AllSpotsMapScreen';
 import DetailScreen from './src/screens/DetailScreen';
 
-global.Buffer = Buffer;
+(globalThis as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
 
 export type RootStackParamList = {
   HomeTab: undefined;
