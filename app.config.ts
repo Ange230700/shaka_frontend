@@ -1,5 +1,8 @@
 // app.config.ts
 import 'dotenv/config';
+
+const isWeb = process.env.WEB === 'true'; // Expo sets WEB=true for web export
+
 export default {
   expo: {
     name: 'shaka_frontend',
@@ -31,11 +34,15 @@ export default {
       },
     },
     web: { favicon: './assets/favicon.png' },
-    plugins: [
-      [
-        'react-native-maps',
-        { config: { googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY } },
-      ],
-    ],
+
+    // ⬇️ Only include the maps plugin for native builds
+    plugins: isWeb
+      ? []
+      : [
+          [
+            'react-native-maps',
+            { config: { googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY } },
+          ],
+        ],
   },
 } as const;
