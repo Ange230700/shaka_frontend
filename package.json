@@ -11,7 +11,7 @@
     "commit": "git-cz",
     "commitlint": "commitlint --edit",
     "lint": "eslint . --cache --fix",
-    "copy-leaflet": "cp -r node_modules/leaflet/dist/images/ public/images/",
+    "copy-leaflet": "mkdir -p public/images && cp -r node_modules/leaflet/dist/images/* public/images/",
     "clean": "rm -rf public/images/* package-lock.json node_modules .expo dist",
     "postinstall": "npm run copy-leaflet",
     "test": "jest --detectOpenHandles --passWithNoTests",

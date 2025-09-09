@@ -39,7 +39,6 @@ export default function AllSpotsMap({ spots }: { readonly spots: SurfSpot[] }) {
       }}
     >
       {spots.map((spot) => {
-        const { lat, lng } = parseGeocodeRaw(spot.geocodeRaw);
         return (
           <Marker
             key={spot.surfSpotId}

@@ -7,3 +7,13 @@ jest.setTimeout(15000);
 jest.mock('react-native-reanimated', () =>
   require('react-native-reanimated/mock'),
 );
+
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  if (
+    typeof args[0] === 'string' &&
+    /useNativeDriver|requires a host component/i.test(args[0])
+  )
+    return;
+  originalConsoleError(...args);
+};

@@ -53,6 +53,8 @@ export default [
       // surface formatting problems
       'prettier/prettier': 'warn',
 
+      'react-native/no-inline-styles': 'warn',
+
       // prefer TS version; disable base rule
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [

@@ -4,6 +4,7 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Buffer } from 'buffer';
+import styles from './AllSpotsLeafletMap.module.css';
 
 global.Buffer = Buffer;
 
@@ -39,12 +40,8 @@ export default function AllSpotsLeafletMap({
   const center: [number, number] = [first.lat, first.lng];
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <MapContainer
-        center={center}
-        zoom={3}
-        style={{ width: '100%', height: '100%' }}
-      >
+    <div className={styles.container}>
+      <MapContainer center={center} zoom={3} className={styles.map}>
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

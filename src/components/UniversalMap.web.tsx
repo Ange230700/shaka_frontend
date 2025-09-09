@@ -3,6 +3,7 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'shakafront/setupLeafletIcons';
+import styles from './UniversalMap.web.module.css';
 
 type Props = Readonly<{ latitude: number; longitude: number; label?: string }>;
 
@@ -13,20 +14,8 @@ export default function UniversalMap({
 }: Props) {
   const center: [number, number] = [latitude, longitude];
   return (
-    <div
-      style={{
-        width: '100%',
-        height: 220,
-        margin: '12px 0',
-        borderRadius: 12,
-        overflow: 'hidden',
-      }}
-    >
-      <MapContainer
-        center={center}
-        zoom={15}
-        style={{ width: '100%', height: '100%' }}
-      >
+    <div className={styles.container}>
+      <MapContainer center={center} zoom={15} className={styles.map}>
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

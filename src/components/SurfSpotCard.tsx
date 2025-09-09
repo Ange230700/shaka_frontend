@@ -30,7 +30,7 @@ const SurfSpotCard: React.FC<Props> = ({
     <View style={styles.info}>
       <Text style={styles.title}>{spot.destination}</Text>
       <Text>{spot.address}</Text>
-      <Text>Difficulty: {spot.difficultyLevel}</Text>
+      <Text>Difficulty: {spot.difficultyLevel ?? 'N/A'}</Text>
       <TouchableOpacity
         testID="favorite-toggle"
         accessibilityRole="button"
@@ -38,7 +38,7 @@ const SurfSpotCard: React.FC<Props> = ({
           isFavorite ? 'Remove from favorites' : 'Add to favorites'
         }
         onPress={onFavoriteToggle}
-        style={{ position: 'absolute', right: 8, top: 8 }}
+        style={styles.favBtn}
       >
         <Ionicons
           name={isFavorite ? 'heart' : 'heart-outline'}
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 120 },
   info: { padding: 10, position: 'relative' },
   title: { fontWeight: 'bold', fontSize: 18, marginBottom: 2 },
+  favBtn: { position: 'absolute', right: 8, top: 8 },
 });
 
 export default SurfSpotCard;

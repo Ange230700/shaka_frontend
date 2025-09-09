@@ -1,12 +1,22 @@
-// src\screens\FavoritesScreen.tsx
-
+// src/screens/FavoritesScreen.tsx
 import React, { useEffect, useState, useMemo } from 'react';
-import { FlatList, ActivityIndicator, Text } from 'react-native';
+import {
+  FlatList,
+  ActivityIndicator,
+  Text,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { fetchSurfSpots } from 'shakafront/api/surfspotApi';
 import { SurfSpot } from 'shakafront/models/SurfSpot';
 import SurfSpotCard from 'shakafront/components/SurfSpotCard';
 import { useAppDispatch, useAppSelector } from 'shakafront/store/hooks';
 import { toggleFavorite } from 'shakafront/store/favoritesSlice';
+
+const styles = StyleSheet.create({
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  emptyText: { textAlign: 'center', marginTop: 40 },
+});
 
 const FavoritesScreen = () => {
   const [spots, setSpots] = useState<SurfSpot[]>([]);
@@ -25,22 +35,29 @@ const FavoritesScreen = () => {
     [spots, favoriteIds],
   );
 
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-  if (favoriteSpots.length === 0)
+  if (loading) {
     return (
-      <Text style={{ textAlign: 'center', marginTop: 40 }}>
-        No favorites yet.
-      </Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
     );
+  }
+
+  if (favoriteSpots.length === 0) {
+    return <Text style={styles.emptyText}>No favorites yet.</Text>;
+  }
 
   return (
     <FlatList
+      initialNumToRender={10}
+      windowSize={5}
+      removeClippedSubviews
       data={favoriteSpots}
       keyExtractor={(item) => item.surfSpotId}
       renderItem={({ item }) => (
         <SurfSpotCard
           spot={item}
-          isFavorite={true}
+          isFavorite
           onFavoriteToggle={() => dispatch(toggleFavorite(item.surfSpotId))}
         />
       )}

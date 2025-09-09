@@ -1,6 +1,5 @@
 // tests/screens.DetailScreen.test.tsx
 
-import React from 'react';
 import * as api from 'shakafront/api/surfspotApi';
 import { renderWithNav } from 'shakafront1/test-utils';
 import DetailScreen from 'shakafront/screens/DetailScreen';
@@ -14,7 +13,6 @@ jest.mock('@react-navigation/native', () => {
 });
 
 jest.mock('shakafront/components/UniversalMap', () => {
-  const React = require('react');
   const { View, Text } = require('react-native');
   return function UniversalMapMock({ latitude, longitude, label }: any) {
     return (

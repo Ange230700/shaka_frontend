@@ -9,12 +9,22 @@ import {
   StyleSheet,
   Linking,
   ActivityIndicator,
+  View,
 } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { fetchSurfSpotById } from 'shakafront/api/surfspotApi';
 import { SurfSpot } from 'shakafront/models/SurfSpot';
 // @ts-ignore
 import UniversalMap from 'shakafront/components/UniversalMap';
+
+const styles = StyleSheet.create({
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: { alignItems: 'center', padding: 16 },
+  image: { width: 320, height: 200, borderRadius: 12, marginBottom: 12 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 6 },
+  info: { fontSize: 16, marginBottom: 4 },
+  link: { color: '#2563eb', marginTop: 10 }, // blue-600-ish
+});
 
 type DetailScreenRouteProp = RouteProp<
   { params: { surfSpotId: string } },
@@ -50,7 +60,13 @@ const DetailScreen = () => {
       .finally(() => setLoading(false));
   }, [surfSpotId]);
 
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   if (!spot) return <Text>Not found</Text>;
 
   const { lat, lng } = parseGeocodeRaw(spot.geocodeRaw);
@@ -78,7 +94,7 @@ const DetailScreen = () => {
       </Text>
       {spot.magicSeaweedLink && (
         <Text
-          style={{ color: 'blue', marginTop: 10 }}
+          style={styles.link}
           onPress={() =>
             spot.magicSeaweedLink && Linking.openURL(spot.magicSeaweedLink)
           }
@@ -89,12 +105,5 @@ const DetailScreen = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { alignItems: 'center', padding: 16 },
-  image: { width: 320, height: 200, borderRadius: 12, marginBottom: 12 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 6 },
-  info: { fontSize: 16, marginBottom: 4 },
-});
 
 export default DetailScreen;

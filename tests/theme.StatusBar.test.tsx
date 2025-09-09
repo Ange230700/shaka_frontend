@@ -1,5 +1,4 @@
 // tests/theme.StatusBar.test.tsx
-import React from 'react';
 import { render } from '@testing-library/react-native';
 import * as RN from 'react-native';
 
@@ -20,17 +19,24 @@ jest.mock('react-native-safe-area-context', () => {
     height: 640,
   });
 
-  const SafeAreaProvider = ({ children }: any) => (
-    <SafeAreaInsetsContext.Provider
-      value={{ top: 0, bottom: 0, left: 0, right: 0 }}
-    >
-      <SafeAreaFrameContext.Provider
-        value={{ x: 0, y: 0, width: 320, height: 640 }}
-      >
-        {children}
-      </SafeAreaFrameContext.Provider>
-    </SafeAreaInsetsContext.Provider>
-  );
+  const SafeAreaProvider = ({ children }: any) => {
+    const insets = React.useMemo(
+      () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+      [],
+    );
+    const frame = React.useMemo(
+      () => ({ x: 0, y: 0, width: 320, height: 640 }),
+      [],
+    );
+
+    return (
+      <SafeAreaInsetsContext.Provider value={insets}>
+        <SafeAreaFrameContext.Provider value={frame}>
+          {children}
+        </SafeAreaFrameContext.Provider>
+      </SafeAreaInsetsContext.Provider>
+    );
+  };
 
   const SafeAreaView = ({ children }: any) => <>{children}</>;
   const useSafeAreaInsets = () => React.useContext(SafeAreaInsetsContext);
@@ -53,7 +59,6 @@ jest.mock('react-native-safe-area-context', () => {
 
 // ✅ Silence act warnings from Ionicons by making it a no-op
 jest.mock('@expo/vector-icons', () => {
-  const React = require('react');
   return {
     __esModule: true,
     Ionicons: () => null,
