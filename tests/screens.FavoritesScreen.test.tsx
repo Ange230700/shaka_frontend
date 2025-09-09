@@ -13,6 +13,13 @@ jest.mock('shakafront/api/surfspotApi', () => ({
   fetchSurfSpotById: jest.fn(),
 }));
 
+// ✅ Mock the underlying HTTP client to prevent any real requests
+jest.mock('shakafront/services/http', () => ({
+  __esModule: true,
+  default: { get: jest.fn() },
+}));
+
+const http = require('shakafront/services/http').default as { get: jest.Mock };
 // Grab the mocked functions to set return values
 const { fetchSurfSpots } = require('shakafront/api/surfspotApi') as {
   fetchSurfSpots: jest.Mock;
@@ -40,6 +47,7 @@ const mockSpots = [
 describe('FavoritesScreen', () => {
   beforeEach(() => {
     fetchSurfSpots.mockResolvedValue(mockSpots);
+    http.get.mockResolvedValue({ data: mockSpots });
     store.dispatch({ type: 'favorites/clearFavorites' });
   });
 
