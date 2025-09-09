@@ -4,7 +4,7 @@ export default {
   preset: 'jest-expo',
   testEnvironment: 'node',
   testMatch: [
-    '**/__tests__/**/*.(test|spec).[tj]s?(x)',
+    '**/tests/**/*.(test|spec).[tj]s?(x)',
     '**/?(*.)+(test|spec).[tj]s?(x)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
