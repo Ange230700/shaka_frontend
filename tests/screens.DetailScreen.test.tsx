@@ -68,7 +68,7 @@ describe('DetailScreen', () => {
   });
 
   it('decodes geocodeRaw and passes coords to UniversalMap', async () => {
-    const { findByTestId, findByText } = renderWithNav(<DetailScreen />);
+    const { findByTestId } = renderWithNav(<DetailScreen />);
 
     // Either remove this line or make it non-ambiguous:
     // expect(await findByText('Detail X')).toBeTruthy();

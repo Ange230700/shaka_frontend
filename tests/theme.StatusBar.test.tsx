@@ -1,8 +1,10 @@
 // tests/theme.StatusBar.test.tsx
 import React from 'react';
 import { render } from '@testing-library/react-native';
+import * as RN from 'react-native';
+import App from '../App';
 
-// 1) Mock expo-status-bar BEFORE loading App
+// Mock expo-status-bar so we can query by testID and inspect props
 jest.mock('expo-status-bar', () => {
   const { View } = require('react-native');
   return {
@@ -12,20 +14,16 @@ jest.mock('expo-status-bar', () => {
 });
 
 test('uses dark theme (light status bar text)', () => {
-  // 2) Mock useColorScheme, then load App in an isolated module scope
-  jest.isolateModules(() => {
-    jest.doMock('react-native', () => ({
-      ...jest.requireActual('react-native'),
-      useColorScheme: () => 'dark',
-    }));
+  // 👇 Only override the hook, do not re-mock the whole module
+  const schemeSpy = jest.spyOn(RN, 'useColorScheme').mockReturnValue('dark');
 
-    // 3) Now require App so it picks up the mocks
-    const App = require('../App').default;
+  const { getByTestId } = render(<App />);
+  const sb = getByTestId('StatusBar');
 
-    const { getByTestId } = render(<App />);
-    const sb = getByTestId('StatusBar');
+  // dark scheme -> light text/icons
+  expect(sb.props.style).toBe('light');
+  // backgroundColor comes from MyDarkTheme.colors.background
+  expect(sb.props.backgroundColor).toBe('#0b0f14');
 
-    expect(sb.props.style).toBe('light'); // dark scheme -> light bar text
-    expect(sb.props.backgroundColor).toBe('#0b0f14'); // from MyDarkTheme.colors.background
-  });
+  schemeSpy.mockRestore();
 });
