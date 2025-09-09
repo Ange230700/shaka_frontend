@@ -1,13 +1,22 @@
 // tests/screens.FavoritesScreen.test.tsx
 import React from 'react';
-import * as api from 'shakafront/api/surfspotApi';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import { renderWithNav } from 'shakafront1/test-utils';
 import FavoritesScreen from 'shakafront/screens/FavoritesScreen';
 import { store } from 'shakafront/store';
 import { addFavorite } from 'shakafront/store/favoritesSlice';
 
-jest.mock('shakafront/api/surfspotApi');
+// ✅ Explicit factory mock so exports are jest.fn
+jest.mock('shakafront/api/surfspotApi', () => ({
+  __esModule: true,
+  fetchSurfSpots: jest.fn(),
+  fetchSurfSpotById: jest.fn(),
+}));
+
+// Grab the mocked functions to set return values
+const { fetchSurfSpots } = require('shakafront/api/surfspotApi') as {
+  fetchSurfSpots: jest.Mock;
+};
 
 const mockSpots = [
   {
@@ -30,7 +39,7 @@ const mockSpots = [
 
 describe('FavoritesScreen', () => {
   beforeEach(() => {
-    (api.fetchSurfSpots as jest.Mock).mockResolvedValue(mockSpots);
+    fetchSurfSpots.mockResolvedValue(mockSpots);
     store.dispatch({ type: 'favorites/clearFavorites' });
   });
 
@@ -46,11 +55,9 @@ describe('FavoritesScreen', () => {
       <FavoritesScreen />,
     );
 
-    // Only Fav B is shown
     expect(await findByText('Fav B')).toBeTruthy();
     expect(queryByText('Fav A')).toBeNull();
 
-    // Toggle favorite off (use testID instead of a11yRole)
     const hearts = getAllByTestId('favorite-toggle');
     fireEvent.press(hearts[0]);
 
