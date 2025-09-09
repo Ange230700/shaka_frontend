@@ -32,6 +32,11 @@ const SurfSpotCard: React.FC<Props> = ({
       <Text>{spot.address}</Text>
       <Text>Difficulty: {spot.difficultyLevel}</Text>
       <TouchableOpacity
+        testID="favorite-toggle"
+        accessibilityRole="button"
+        accessibilityLabel={
+          isFavorite ? 'Remove from favorites' : 'Add to favorites'
+        }
         onPress={onFavoriteToggle}
         style={{ position: 'absolute', right: 8, top: 8 }}
       >

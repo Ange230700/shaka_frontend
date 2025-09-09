@@ -12,5 +12,9 @@ export default {
   moduleNameMapper: {
     '^shakafront/(.*)$': '<rootDir>/src/$1',
     '^shakafront1/(.*)$': '<rootDir>/tests/$1',
+    '^react-native-maps$': '<rootDir>/tests/mocks/reactNativeMaps.js',
+    '^react-leaflet$': '<rootDir>/tests/mocks/reactLeaflet.js',
+    '\\.(css)$': '<rootDir>/tests/mocks/emptyModule.js',
+    'leaflet/dist/leaflet.css': '<rootDir>/tests/mocks/emptyModule.js',
   },
 };
