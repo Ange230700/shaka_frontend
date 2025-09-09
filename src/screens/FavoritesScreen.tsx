@@ -15,17 +15,23 @@ const FavoritesScreen = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchSurfSpots().then(setSpots).finally(() => setLoading(false));
+    fetchSurfSpots()
+      .then(setSpots)
+      .finally(() => setLoading(false));
   }, []);
 
   const favoriteSpots = useMemo(
     () => spots.filter((s) => favoriteIds.includes(s.surfSpotId)),
-    [spots, favoriteIds]
+    [spots, favoriteIds],
   );
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   if (favoriteSpots.length === 0)
-    return <Text style={{ textAlign: 'center', marginTop: 40 }}>No favorites yet.</Text>;
+    return (
+      <Text style={{ textAlign: 'center', marginTop: 40 }}>
+        No favorites yet.
+      </Text>
+    );
 
   return (
     <FlatList

@@ -12,25 +12,47 @@ type Props = {
   onPress?: () => void;
 };
 
-const SurfSpotCard: React.FC<Props> = ({ spot, isFavorite, onFavoriteToggle, onPress }) => (
+const SurfSpotCard: React.FC<Props> = ({
+  spot,
+  isFavorite,
+  onFavoriteToggle,
+  onPress,
+}) => (
   <TouchableOpacity onPress={onPress} style={styles.card}>
     <Image
-      source={{ uri: spot.photoUrls[0] ?? 'https://via.placeholder.com/200x120.png?text=No+Image' }}
+      source={{
+        uri:
+          spot.photoUrls[0] ??
+          'https://via.placeholder.com/200x120.png?text=No+Image',
+      }}
       style={styles.image}
     />
     <View style={styles.info}>
       <Text style={styles.title}>{spot.destination}</Text>
       <Text>{spot.address}</Text>
       <Text>Difficulty: {spot.difficultyLevel}</Text>
-      <TouchableOpacity onPress={onFavoriteToggle} style={{ position: 'absolute', right: 8, top: 8 }}>
-        <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={24} color="red" />
+      <TouchableOpacity
+        onPress={onFavoriteToggle}
+        style={{ position: 'absolute', right: 8, top: 8 }}
+      >
+        <Ionicons
+          name={isFavorite ? 'heart' : 'heart-outline'}
+          size={24}
+          color="red"
+        />
       </TouchableOpacity>
     </View>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#fff', borderRadius: 10, margin: 6, elevation: 2, overflow: 'hidden' },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    margin: 6,
+    elevation: 2,
+    overflow: 'hidden',
+  },
   image: { width: '100%', height: 120 },
   info: { padding: 10, position: 'relative' },
   title: { fontWeight: 'bold', fontSize: 18, marginBottom: 2 },

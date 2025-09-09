@@ -17,7 +17,9 @@ const HomeScreen = () => {
   const navigation = useNavigation<any>();
 
   useEffect(() => {
-    fetchSurfSpots().then(setSpots).finally(() => setLoading(false));
+    fetchSurfSpots()
+      .then(setSpots)
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
@@ -32,7 +34,9 @@ const HomeScreen = () => {
           spot={item}
           isFavorite={favorites.includes(item.surfSpotId)}
           onFavoriteToggle={() => dispatch(toggleFavorite(item.surfSpotId))}
-          onPress={() => navigation.navigate('Detail', { surfSpotId: item.surfSpotId })}
+          onPress={() =>
+            navigation.navigate('Detail', { surfSpotId: item.surfSpotId })
+          }
         />
       )}
     />

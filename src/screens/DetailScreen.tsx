@@ -1,21 +1,34 @@
 // src\screens\DetailScreen.tsx
 
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView, StyleSheet, Linking, ActivityIndicator } from 'react-native';
+import {
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Linking,
+  ActivityIndicator,
+} from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { fetchSurfSpotById } from 'shakafront/api/surfspotApi';
 import { SurfSpot } from 'shakafront/models/SurfSpot';
 // @ts-ignore
-import UniversalMap from "shakafront/components/UniversalMap";
+import UniversalMap from 'shakafront/components/UniversalMap';
 
-type DetailScreenRouteProp = RouteProp<{ params: { surfSpotId: string } }, 'params'>;
+type DetailScreenRouteProp = RouteProp<
+  { params: { surfSpotId: string } },
+  'params'
+>;
 
-function parseGeocodeRaw(geocodeRaw?: string | null): { lat: number, lng: number } {
+function parseGeocodeRaw(geocodeRaw?: string | null): {
+  lat: number;
+  lng: number;
+} {
   if (!geocodeRaw) return { lat: 0, lng: 0 };
   try {
     // React Native/Node: use Buffer
-    const json = Buffer.from(geocodeRaw, "base64").toString("utf-8");
+    const json = Buffer.from(geocodeRaw, 'base64').toString('utf-8');
     const data = JSON.parse(json);
     const lat = Number(data?.o?.lat ?? 0);
     const lng = Number(data?.o?.lng ?? 0);
@@ -44,19 +57,31 @@ const DetailScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: spot.photoUrls[0] ?? 'https://via.placeholder.com/400x300.png?text=No+Image' }} style={styles.image} />
+      <Image
+        source={{
+          uri:
+            spot.photoUrls[0] ??
+            'https://via.placeholder.com/400x300.png?text=No+Image',
+        }}
+        style={styles.image}
+      />
       <UniversalMap latitude={lat} longitude={lng} label={spot.destination} />
       <Text style={styles.title}>{spot.destination}</Text>
       <Text style={styles.info}>Address: {spot.address}</Text>
       <Text style={styles.info}>Difficulty: {spot.difficultyLevel} / 5</Text>
-      <Text style={styles.info}>Break Types: {spot.breakTypes.join(', ') || 'N/A'}</Text>
       <Text style={styles.info}>
-        Season: {spot.peakSeasonBegin?.slice(0, 10) ?? 'N/A'} - {spot.peakSeasonEnd?.slice(0, 10) ?? 'N/A'}
+        Break Types: {spot.breakTypes.join(', ') || 'N/A'}
+      </Text>
+      <Text style={styles.info}>
+        Season: {spot.peakSeasonBegin?.slice(0, 10) ?? 'N/A'} -{' '}
+        {spot.peakSeasonEnd?.slice(0, 10) ?? 'N/A'}
       </Text>
       {spot.magicSeaweedLink && (
         <Text
           style={{ color: 'blue', marginTop: 10 }}
-          onPress={() => spot.magicSeaweedLink && Linking.openURL(spot.magicSeaweedLink)}
+          onPress={() =>
+            spot.magicSeaweedLink && Linking.openURL(spot.magicSeaweedLink)
+          }
         >
           View Surf Report
         </Text>

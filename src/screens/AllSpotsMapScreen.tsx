@@ -1,10 +1,10 @@
 // src\screens\AllSpotsMapScreen.tsx
 
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
-import { fetchSurfSpots } from "shakafront/api/surfspotApi";
-import { SurfSpot } from "shakafront/models/SurfSpot";
-import AllSpotsMap from "shakafront/components/AllSpotsMap";
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
+import { fetchSurfSpots } from 'shakafront/api/surfspotApi';
+import { SurfSpot } from 'shakafront/models/SurfSpot';
+import AllSpotsMap from 'shakafront/components/AllSpotsMap';
 
 const AllSpotsMapScreen = () => {
   const [spots, setSpots] = useState<SurfSpot[]>([]);

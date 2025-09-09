@@ -1,15 +1,18 @@
 // src\components\AllSpotsMap.native.tsx
 
-import React from "react";
-import { Dimensions } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { SurfSpot } from "shakafront/models/SurfSpot";
-import { Buffer } from "buffer";
+import React from 'react';
+import { Dimensions } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { SurfSpot } from 'shakafront/models/SurfSpot';
+import { Buffer } from 'buffer';
 
-function parseGeocodeRaw(geocodeRaw?: string | null): { lat: number, lng: number } {
+function parseGeocodeRaw(geocodeRaw?: string | null): {
+  lat: number;
+  lng: number;
+} {
   if (!geocodeRaw) return { lat: 0, lng: 0 };
   try {
-    const json = Buffer.from(geocodeRaw, "base64").toString("utf-8");
+    const json = Buffer.from(geocodeRaw, 'base64').toString('utf-8');
     const data = JSON.parse(json);
     return { lat: Number(data?.o?.lat ?? 0), lng: Number(data?.o?.lng ?? 0) };
   } catch {
@@ -35,7 +38,7 @@ export default function AllSpotsMap({ spots }: { readonly spots: SurfSpot[] }) {
         longitudeDelta: 10,
       }}
     >
-      {spots.map(spot => {
+      {spots.map((spot) => {
         const { lat, lng } = parseGeocodeRaw(spot.geocodeRaw);
         return (
           <Marker

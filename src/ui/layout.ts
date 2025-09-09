@@ -10,4 +10,3 @@ export const containerStyles = StyleSheet.create({
     maxWidth: PAGE_MAX_WIDTH,
   },
 });
-

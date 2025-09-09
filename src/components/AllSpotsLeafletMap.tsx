@@ -14,10 +14,13 @@ type Spot = {
   geocodeRaw?: string | null;
 };
 
-function parseGeocodeRaw(geocodeRaw?: string | null): { lat: number, lng: number } {
+function parseGeocodeRaw(geocodeRaw?: string | null): {
+  lat: number;
+  lng: number;
+} {
   if (!geocodeRaw) return { lat: 0, lng: 0 };
   try {
-    const json = Buffer.from(geocodeRaw, "base64").toString("utf-8");
+    const json = Buffer.from(geocodeRaw, 'base64').toString('utf-8');
     const data = JSON.parse(json);
     return { lat: Number(data?.o?.lat ?? 0), lng: Number(data?.o?.lng ?? 0) };
   } catch {
@@ -25,8 +28,14 @@ function parseGeocodeRaw(geocodeRaw?: string | null): { lat: number, lng: number
   }
 }
 
-export default function AllSpotsLeafletMap({ spots }: { readonly spots: Spot[] }) {
-  const first = spots[0] ? parseGeocodeRaw(spots[0].geocodeRaw) : { lat: 0, lng: 0 };
+export default function AllSpotsLeafletMap({
+  spots,
+}: {
+  readonly spots: Spot[];
+}) {
+  const first = spots[0]
+    ? parseGeocodeRaw(spots[0].geocodeRaw)
+    : { lat: 0, lng: 0 };
   const center: [number, number] = [first.lat, first.lng];
 
   return (
@@ -37,15 +46,16 @@ export default function AllSpotsLeafletMap({ spots }: { readonly spots: Spot[] }
         style={{ width: '100%', height: '100%' }}
       >
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
+          attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {spots.map(spot => {
+        {spots.map((spot) => {
           const { lat, lng } = parseGeocodeRaw(spot.geocodeRaw);
           return (
             <Marker position={[lat, lng]} key={spot.surfSpotId}>
               <Popup>
-                <b>{spot.destination}</b><br />
+                <b>{spot.destination}</b>
+                <br />
                 {spot.address}
               </Popup>
             </Marker>
