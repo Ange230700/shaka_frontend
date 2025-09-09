@@ -1,3 +1,4 @@
+// tsconfig.json
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
@@ -5,7 +6,11 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "shakafront/*": ["./src/*"]
-    }
-  }
+      "shakafront/*": ["./src/*"],
+      "shakafront1/*": ["./tests/*"]
+    },
+    "types": ["nativewind/types", "jest", "node"],
+    "skipLibCheck": true
+  },
+  "include": ["src", "tests", "jest.setup.ts", "tests/types"]
 }

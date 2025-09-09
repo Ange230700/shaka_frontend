@@ -3,6 +3,9 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Buffer } from 'buffer';
+
+global.Buffer = Buffer;
 
 type Spot = {
   surfSpotId: string;

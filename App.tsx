@@ -1,15 +1,24 @@
 // App.tsx
 
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  NavigationContainer,
+  DefaultTheme as NavLight,
+  DarkTheme as NavDark,
+  Theme,
+} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from 'shakafront/screens/HomeScreen';
-import FavoritesScreen from 'shakafront/screens/FavoritesScreen';
-import DetailScreen from 'shakafront/screens/DetailScreen';
-import AllSpotsMapScreen from 'shakafront/screens/AllSpotsMapScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 import { Buffer } from "buffer";
+import HomeScreen from './src/screens/HomeScreen';
+import FavoritesScreen from './src/screens/FavoritesScreen';
+import AllSpotsMapScreen from './src/screens/AllSpotsMapScreen';
+import DetailScreen from './src/screens/DetailScreen';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { useColorScheme } from 'react-native';
 global.Buffer = Buffer;
 
 export type RootStackParamList = {
@@ -20,6 +29,33 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
+
+/** Customize both themes (optional) */
+const MyLightTheme: Theme = {
+  ...NavLight,
+  colors: {
+    ...NavLight.colors,
+    primary: '#1e90ff',
+    background: '#ffffff',
+    card: '#f8f8f8',
+    text: '#1f2937',
+    border: '#e5e7eb',
+    notification: '#ff3b30',
+  },
+};
+
+const MyDarkTheme: Theme = {
+  ...NavDark,
+  colors: {
+    ...NavDark.colors,
+    primary: '#60a5fa',
+    background: '#0b0f14',
+    card: '#111827',
+    text: '#e5e7eb',
+    border: '#1f2937',
+    notification: '#f87171',
+  },
+};
 
 function renderTabBarIcon(routeName: string) {
   const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
@@ -53,20 +89,28 @@ function Tabs() {
 }
 
 export default function App() {
+  const scheme = useColorScheme(); // 'light' | 'dark' | null
+  const theme = scheme === 'dark' ? MyDarkTheme : MyLightTheme;
+
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+    <SafeAreaProvider>
+      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+    <NavigationContainer theme={theme}>
       <Stack.Navigator>
         <Stack.Screen
           name="HomeTab"
           component={Tabs}
           options={{ headerShown: false }}
-        />
+          />
         <Stack.Screen
           name="Detail"
           component={DetailScreen}
           options={{ title: 'Surf Spot Details' }}
-        />
+          />
       </Stack.Navigator>
     </NavigationContainer>
+          </SafeAreaProvider>
+          </Provider>
   );
 }
